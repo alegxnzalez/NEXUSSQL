@@ -1,0 +1,256 @@
+// SHIP_BASE_BOV.js
+
+window.SHIP_BASE_BOV = {
+  "tables": {
+    "SHIP_BASE_BOV": {
+      "columns": {
+        "SHIPMENT_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false
+        },
+        "SHIPMENT_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "SHIPMENT_NAME": {
+          "type": "VARCHAR2(120)",
+          "nullable": true
+        },
+        "IS_TEMPLATE": {
+          "type": "VARCHAR2(1)",
+          "nullable": false
+        },
+        "TRANSPORT_MODE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "TOTAL_ACTUAL_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_ACTUAL_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_WEIGHTED_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_WEIGHTED_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "T_ACTUAL_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "T_WEIGHTED_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "LOADED_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "LOADED_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "LOADED_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "START_TIME": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "END_TIME": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "FREIGHT_TERMS": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "PARENT_LEG_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "VOYAGE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "SERVPROV_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "SERVPROV_NAME": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SERVPROV_ADDRESS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SCAC": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "RATE_OFFERING_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "RATE_GEO_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "X_LANE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "X_LANE_XID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "X_LANE_DETAILS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "X_LANE_SOURCE": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "X_LANE_DESTINATION": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "IS_AUTO_MERGE_CONSOLIDATE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "PERSPECTIVE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "FLIGHT_INSTANCE_ID": {
+          "type": "NUMBER(10)",
+          "nullable": true
+        },
+        "TOTAL_WEIGHT": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_WEIGHT_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": false
+        },
+        "TOTAL_WEIGHT_BASE": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_VOLUME": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_VOLUME_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": false
+        },
+        "TOTAL_VOLUME_BASE": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false,
+          "info": "Domain of the User. Is used for creating the GID."
+        },
+        "CURRENT_STOP_NUM": {
+          "type": "NUMBER(3)",
+          "nullable": true
+        },
+        "SHIPMENT_AS_WORK": {
+          "type": "VARCHAR2(1)",
+          "nullable": false
+        },
+        "CHECK_TIME_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CHECK_COST_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CHECK_CAPACITY_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CM_NAME": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "CM_SEQUENCE_NUM": {
+          "type": "NUMBER(5)",
+          "nullable": true
+        },
+        "CM_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "CM_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "HAZMAT_MODE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "HAZMAT_REGION_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "WEIGH_CODE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "RULE_7": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "SHIPMENT_RELEASED": {
+          "type": "CHAR(1)",
+          "nullable": false
+        }
+      },
+      "fk_tables": []
+    }
+  }
+};

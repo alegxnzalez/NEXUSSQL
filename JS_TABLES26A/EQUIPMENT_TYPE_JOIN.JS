@@ -1,0 +1,51 @@
+// EQUIPMENT_TYPE_JOIN.js
+
+window.EQUIPMENT_TYPE_JOIN = {
+  "tables": {
+    "EQUIPMENT_TYPE_JOIN": {
+      "description": "This table associates the equipment types with the equipment groups. In GC3 users have the flexibility of defining the equipments as types or groups. I both are defined, this table can be used to join them.",
+      "columns": {
+        "EQUIPMENT_TYPE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "EQUIPMENT_TYPE",
+          "info": "The GID for the equipment type."
+},
+        "EQUIPMENT_GROUP_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "EQUIPMENT_GROUP",
+          "info": "The GID for the equipment group."
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false,
+          "info": "Database domain where this data is stored."
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false,
+          "info": "The user ID of the data insert user."
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false,
+          "info": "Date and time of data insert."
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true,
+          "info": "The user ID of the data update user."
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true,
+          "info": "Date and time of the most recent data update."
+}
+      },
+      "fk_tables": []
+    }
+  }
+};

@@ -1,0 +1,42 @@
+// AUDIT_DATA_INFO.js
+
+window.AUDIT_DATA_INFO = {
+  "tables": {
+    "AUDIT_DATA_INFO": {
+      "columns": {
+        "AUDIT_TRAIL_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "AUDIT_TRAIL"
+        },
+        "DATA_INFO_SEQ": {
+          "type": "NUMBER(10)",
+          "nullable": false,
+          "key_value": true
+        },
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+        },
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+        },
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+        }
+      },
+      "fk_tables": []
+    }
+  }
+};

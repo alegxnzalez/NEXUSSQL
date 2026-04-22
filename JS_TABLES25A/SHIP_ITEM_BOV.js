@@ -1,0 +1,484 @@
+// SHIP_ITEM_BOV.js
+
+window.SHIP_ITEM_BOV = {
+  "tables": {
+    "SHIP_ITEM_BOV": {
+      "columns": {
+        "SHIPMENT_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false
+        },
+        "SHIPMENT_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "SHIPMENT_NAME": {
+          "type": "VARCHAR2(120)",
+          "nullable": true
+        },
+        "IS_TEMPLATE": {
+          "type": "VARCHAR2(1)",
+          "nullable": false
+        },
+        "TRANSPORT_MODE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "TOTAL_ACTUAL_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_ACTUAL_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_WEIGHTED_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "TOTAL_WEIGHTED_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "T_ACTUAL_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "T_WEIGHTED_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "LOADED_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "LOADED_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "LOADED_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNLOADED_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "SHIP_START_TIME": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "SHIP_END_TIME": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "FREIGHT_TERMS": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "PARENT_LEG_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "VOYAGE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "SERVPROV_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "SERVPROV_NAME": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SERVPROV_ADDRESS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SCAC": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "RATE_OFFERING_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "RATE_GEO_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "X_LANE_XID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "X_LANE_DETAILS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "IS_AUTO_MERGE_CONSOLIDATE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "PERSPECTIVE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "FLIGHT_INSTANCE_ID": {
+          "type": "NUMBER(10)",
+          "nullable": true
+        },
+        "TOTAL_WEIGHT": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_WEIGHT_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": false
+        },
+        "TOTAL_WEIGHT_BASE": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_VOLUME": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "TOTAL_VOLUME_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": false
+        },
+        "TOTAL_VOLUME_BASE": {
+          "type": "NUMBER()",
+          "nullable": false
+        },
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false,
+          "info": "Domain of the User. Is used for creating the GID."
+        },
+        "CURRENT_STOP_NUM": {
+          "type": "NUMBER(3)",
+          "nullable": true
+        },
+        "SHIPMENT_AS_WORK": {
+          "type": "VARCHAR2(1)",
+          "nullable": false
+        },
+        "CHECK_TIME_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CHECK_COST_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CHECK_CAPACITY_CONSTRAINT": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "CM_NAME": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "CM_SEQUENCE_NUM": {
+          "type": "NUMBER(5)",
+          "nullable": true
+        },
+        "CM_COST": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_COST_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "CM_COST_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "CM_EMPTY_DISTANCE_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "HAZMAT_MODE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "HAZMAT_REGION_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "WEIGH_CODE": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "RULE_7": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "SHIPMENT_RELEASED": {
+          "type": "CHAR(1)",
+          "nullable": false
+        },
+        "S_SHIP_UNIT_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false
+        },
+        "S_SHIP_UNIT_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "SHIP_UNIT_SPEC_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "UNIT_PACKAGING_FORM_CODE_XID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "UNIT_LENGTH": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_LENGTH_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNIT_LENGTH_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_WIDTH": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_WIDTH_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNIT_WIDTH_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_HEIGHT": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_HEIGHT_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNIT_HEIGHT_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_WEIGHT": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_WEIGHT_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNIT_WEIGHT_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_VOLUME": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "UNIT_VOLUME_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "UNIT_VOLUME_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "FLEX_COMMODITY_CODE": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "FLEX_COMMODITY_QUAL_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "IS_SPLITABLE": {
+          "type": "VARCHAR2(1)",
+          "nullable": false
+        },
+        "SHIP_UNIT_COUNT": {
+          "type": "NUMBER(10)",
+          "nullable": false
+        },
+        "SHIP_UNIT_EARLY_PICKUP_DATE": {
+          "type": "DATE",
+          "nullable": true
+        },
+        "S_SHIP_UNIT_LINE_NO": {
+          "type": "NUMBER(10)",
+          "nullable": false
+        },
+        "ITEM_WEIGHT": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "ITEM_WEIGHT_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "ITEM_WEIGHT_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "WEIGHT_BASE_UOM": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "VOLUME_BASE_UOM": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "ITEM_VOLUME": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "VOLUME_UOM_CODE": {
+          "type": "VARCHAR2(64)",
+          "nullable": true
+        },
+        "ITEM_VOLUME_BASE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "ITEM_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false
+        },
+        "ITEM_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "ITEM_NAME": {
+          "type": "VARCHAR2(240)",
+          "nullable": true
+        },
+        "ITEM_DESCRIPTION": {
+          "type": "VARCHAR2(255)",
+          "nullable": true
+        },
+        "ITEM_COMMODITY": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "TRACKING_TAG1": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "TRACKING_TAG2": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "TRACKING_TAG3": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "TRACKING_TAG4": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "OR_LINE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "ORDER_RELEASE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "ITEM_PACKAGE_SPEC_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "ITEM_PACKAGING_FORM_CODE_XID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "ITEM_PACKAGE_COUNT": {
+          "type": "NUMBER(10)",
+          "nullable": true
+        },
+        "DECLARED_VALUE": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "DECLARED_VALUE_CURRENCY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "PACKAGED_ITEM_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false
+        },
+        "PACKAGE_TYPE_DESCRIPTION": {
+          "type": "VARCHAR2(50)",
+          "nullable": true
+        },
+        "HAZMAT_ITEM_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "ORDER_RELEASE_XID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "CONSIGNEE_LOCATION_GID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "CONSIGNEE_NAME": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "CONSIGNEE_ADDRESS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SHIPPER_LOCATION_GID": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SHIPPER_NAME": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SHIPPER_ADDRESS": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        },
+        "SHIPPER_CORPORATION": {
+          "type": "VARCHAR2(4000)",
+          "nullable": true
+        }
+      },
+      "fk_tables": []
+    }
+  }
+};

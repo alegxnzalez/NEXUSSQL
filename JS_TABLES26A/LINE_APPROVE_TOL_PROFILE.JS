@@ -1,0 +1,50 @@
+// LINE_APPROVE_TOL_PROFILE.js
+
+window.LINE_APPROVE_TOL_PROFILE = {
+  "tables": {
+    "LINE_APPROVE_TOL_PROFILE": {
+      "description": "Collection of rules to define line approval tolerance checks.  Profiles may be assigned to one or more service providers.",
+      "columns": {
+        "LINE_APPROVE_TOL_PROFILE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "info": "user defined id for the profile"
+},
+        "LINE_APPROVE_TOL_PROFILE_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": true
+},
+        "DESCRIPTION": {
+          "type": "VARCHAR2(120)",
+          "nullable": true,
+          "info": "optional user description for rule profile"
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+}
+      },
+      "fk_tables": [
+        "LINE_APPROVE_TOL_PROFILE_D",
+        "SERVPROV"
+]
+    }
+  }
+};

@@ -1,0 +1,45 @@
+// DIAG_PROCESS_CONFIG.js
+
+window.DIAG_PROCESS_CONFIG = {
+  "tables": {
+    "DIAG_PROCESS_CONFIG": {
+      "description": "This table used for map DIAG PROCESS TO planning parameter set. So that user can create his own configuration.",
+      "columns": {
+        "DIAG_PROCESS_CONFIG_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "info": "Daignostic Process Configuration GID"
+},
+        "DIAG_PROCESS_CONFIG_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false,
+          "info": "Daignostic Process Configuration XID"
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+}
+      },
+      "fk_tables": [
+        "DIAG_PROCESS_CONFIG_DETAIL"
+]
+    }
+  }
+};

@@ -1,0 +1,44 @@
+// USER_ROLE_GRANT.js
+
+window.USER_ROLE_GRANT = {
+  "tables": {
+    "USER_ROLE_GRANT": {
+      "description": "The user_role_grant table indicates which user roles have been granted directly to a given user.",
+      "columns": {
+        "GRANTEE_GL_USER_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "GL_USER"
+},
+        "GRANTOR_USER_ROLE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "USER_ROLE"
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+}
+      },
+      "fk_tables": []
+    }
+  }
+};

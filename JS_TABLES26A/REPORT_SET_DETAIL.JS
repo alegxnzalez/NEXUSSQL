@@ -1,0 +1,51 @@
+// REPORT_SET_DETAIL.js
+
+window.REPORT_SET_DETAIL = {
+  "tables": {
+    "REPORT_SET_DETAIL": {
+      "description": "The REPORT_SET_DETAIL table associates the reports to the report set.  A report may be in several report sets.",
+      "columns": {
+        "REPORT_SET_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "REPORT_SET",
+          "info": "The report set global identifier."
+},
+        "REPORT_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "REPORT",
+          "info": "The report that is associated with the report set."
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false,
+          "info": "Domain of the User. Is used for creating the GID."
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false,
+          "info": "For audit trail purposes. This field stores the id of the user who first entered the record."
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false,
+          "info": "For audit trail purposes. This field stores the date and time when the record was first entered in the database."
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true,
+          "info": "For audit trail purposes. This field stores the id of the user who last updated the record."
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true,
+          "info": "For audit trail purposes. This field stores the date and time when the record was updated in the database."
+}
+      },
+      "fk_tables": []
+    }
+  }
+};

@@ -1,0 +1,61 @@
+// IE_SS_EQUIPMENT.js
+
+window.IE_SS_EQUIPMENT = {
+  "tables": {
+    "IE_SS_EQUIPMENT": {
+      "columns": {
+        "I_REC_NO": {
+          "type": "NUMBER()",
+          "nullable": false,
+          "key_value": true
+        },
+        "I_TRANSACTION_NO": {
+          "type": "NUMBER()",
+          "nullable": true
+        },
+        "EQUIPMENT_PREFIX": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "EQUIPMENT_ID": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "EQUIPMENT_STATUS_CODE": {
+          "type": "VARCHAR2(30)",
+          "nullable": true
+        },
+        "EQUIPMENT_TYPE": {
+          "type": "VARCHAR2(101)",
+          "nullable": true
+        },
+        "PARTITION_KEY": {
+          "type": "NUMBER()",
+          "nullable": false,
+          "info": "Populated through a trigger, this key is used to determine into which partition this record should be inserted.  The formula is based upon the insert_date column and the frequency in which this table is associated (weekly, monthly, quarterly).  Valid values are 1-4."
+        },
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+        },
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+        },
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+        },
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+        }
+      },
+      "fk_tables": []
+    }
+  }
+};

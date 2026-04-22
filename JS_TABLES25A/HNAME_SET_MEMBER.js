@@ -1,0 +1,49 @@
+// HNAME_SET_MEMBER.js
+
+window.HNAME_SET_MEMBER = {
+  "tables": {
+    "HNAME_SET_MEMBER": {
+      "columns": {
+        "HNAME": {
+          "type": "VARCHAR2(250)",
+          "nullable": false,
+          "key_value": true
+        },
+        "HNAME_SET_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true,
+          "foreign_key": "HNAME_SET",
+          "info": "GC3 Global identifier for the entity. Is created by concatenating Domain Name,\".\" and XID. "
+        },
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": true
+        },
+        "GEO_HIERARCHY_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true,
+          "foreign_key": "GEO_HIERARCHY",
+          "info": "GC3 Global identifier for the entity. Is created by concatenating Domain Name,\".\" and XID."
+        },
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+        },
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+        },
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+        },
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+        }
+      },
+      "fk_tables": []
+    }
+  }
+};

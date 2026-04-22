@@ -1,0 +1,76 @@
+// OB_REFNUM_QUAL.js
+
+window.OB_REFNUM_QUAL = {
+  "tables": {
+    "OB_REFNUM_QUAL": {
+      "columns": {
+        "OB_REFNUM_QUAL_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": false,
+          "key_value": true
+},
+        "OB_REFNUM_QUAL_XID": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+},
+        "OB_REFNUM_QUAL_DESC": {
+          "type": "VARCHAR2(120)",
+          "nullable": true
+},
+        "IS_VISIBLE_IF_MASTER_CARR": {
+          "type": "VARCHAR2(1)",
+          "nullable": false,
+          "values": [
+                    "Y",
+                    "N"
+          ]
+},
+        "DEFAULT_REFNUM_BN_TYPE_GID": {
+          "type": "VARCHAR2(101)",
+          "nullable": true,
+          "foreign_key": "BN_TYPE"
+},
+        "UPDATE_FLAG": {
+          "type": "VARCHAR2(13)",
+          "nullable": true,
+          "values": [
+                    "UPDATE_OK",
+                    "UPDATE_NOT_OK",
+                    "MANY"
+          ],
+          "info": "Specifies if the refnum qualifier can exist on the business object multiple times, or is restricted to occur only once and whether the value is allowed to be updated. If the value is MANY, then the object can have multiple values for the same qualifier. If the value is either UPDATE_OK or UPDATE_NOT_OK, then the rule is in effect, meaning only one value is allowed for a given qualifier. In the case of UPDATE_NOT_OK, the value may not be modified."
+},
+        "OB_REFNUM_SEQUENCE_NO": {
+          "type": "NUMBER(10)",
+          "nullable": true,
+          "info": "The sequence number for Refnum Qualifier, to determine the sequence of Refnum Qualifiers on the Order Base Manager."
+},
+        "DOMAIN_NAME": {
+          "type": "VARCHAR2(50)",
+          "nullable": false
+},
+        "INSERT_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": false
+},
+        "INSERT_DATE": {
+          "type": "DATE",
+          "nullable": false
+},
+        "UPDATE_USER": {
+          "type": "VARCHAR2(128)",
+          "nullable": true
+},
+        "UPDATE_DATE": {
+          "type": "DATE",
+          "nullable": true
+}
+      },
+      "fk_tables": [
+        "IE_SHIPMENTSTATUS",
+        "OBS_STATUS_HISTORY",
+        "OB_REFNUM"
+]
+    }
+  }
+};
