@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexusSQL - Interactive Data Dictionary & ERD</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons -->
@@ -37,6 +38,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/sql-hint.min.js"></script>
     <script src="https://unpkg.com/sql-formatter@latest/dist/sql-formatter.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- Driver.js para Tutorial -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css" />
@@ -646,6 +651,57 @@
             color: #6c757d !important;
             font-weight: bold !important;
         }
+
+        /* Print Mode Styles (for PDF/SVG Export) */
+        .print-mode {
+            background-color: #ffffff !important;
+            background-image: none !important;
+        }
+
+        .print-mode .erd-card {
+            background: #f8f9fa !important;
+            border: 2px solid #0f172a !important;
+            box-shadow: none !important;
+        }
+
+        .print-mode .erd-column .text-white {
+            color: #0f172a !important;
+            /* Fix primary keys invisible text */
+        }
+
+        .print-mode .erd-card-header {
+            background: #ffffff !important;
+            border-bottom: 2px solid #0f172a !important;
+            color: #0f172a !important;
+            font-weight: 800 !important;
+        }
+
+        .print-mode .erd-card-header span {
+            color: #0f172a !important;
+            font-weight: 800 !important;
+        }
+
+        .print-mode .erd-column {
+            color: #334155 !important;
+            border-left: none !important;
+        }
+
+        .print-mode .erd-column span.text-gray-500 {
+            color: #64748b !important;
+            float: right;
+        }
+
+        .print-mode .jtk-connector path {
+            stroke: #0f172a !important;
+        }
+
+        .print-mode .jtk-endpoint circle {
+            fill: #0f172a !important;
+        }
+
+        .print-mode .expand-card-footer {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -710,7 +766,7 @@
             </div>
 
             <div class="p-3 border-t border-[#444c56] text-[10px] text-gray-500 bg-[#1c2128] text-center font-mono">
-                NexusSQL v2.0 • Interactive Studio
+                NexusSQL v2.1 • Interactive Studio
             </div>
         </aside>
 
@@ -765,7 +821,7 @@
 
         <main class="flex-1 relative bg-[#0d1117] overflow-hidden">
             <div id="welcome-state"
-                class="absolute inset-0 flex flex-col items-center justify-center z-30 bg-[#0d1117] overflow-hidden">
+                class="absolute inset-0 flex flex-col items-center justify-start z-30 bg-[#0d1117] overflow-y-auto py-20">
                 <!-- Decorative Background Effects -->
                 <div
                     class="absolute top-1/3 left-1/4 w-[40rem] h-[40rem] bg-blue-600/5 rounded-full blur-[100px] pointer-events-none">
@@ -854,6 +910,43 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Updates Section -->
+                <div class="relative z-10 mt-12 w-full max-w-3xl px-6 pointer-events-auto pb-12">
+                    <div
+                        class="bg-[#1c2128]/80 backdrop-blur-xl p-8 rounded-2xl border border-[#444c56] shadow-2xl relative overflow-hidden group">
+                        <!-- Decorative glow -->
+                        <div
+                            class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-[60px] group-hover:bg-blue-500/20 transition-all duration-700">
+                        </div>
+
+                        <div class="flex items-center justify-between mb-8 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
+                                    <i class="ph-fill ph-sparkle text-amber-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Improvements
+                                        & Updates</h3>
+                                    <p class="text-[10px] text-gray-500 font-medium">Tracking the evolution of NexusSQL
+                                    </p>
+                                </div>
+                            </div>
+                            <span
+                                class="text-[9px] font-black text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20 tracking-tighter uppercase">Release
+                                Notes</span>
+                        </div>
+
+                        <div id="updates-loader"
+                            class="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-4 relative z-10">
+                            <!-- Content from updates.html will be loaded here -->
+                            <div class="flex flex-col items-center justify-center py-20 text-gray-500">
+                                <i class="ph ph-circle-notch animate-spin text-3xl mb-4 text-blue-500/50"></i>
+                                <p class="text-xs font-medium tracking-wide">Syncing latest changes...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="section-dictionary" class="hidden absolute inset-0 flex flex-col p-8 overflow-hidden">
@@ -923,6 +1016,19 @@
                         <i class="ph ph-terminal-window text-emerald-400 group-hover:text-white text-lg"></i>
                         <span>Send to SQL</span>
                     </button>
+                    <!-- Export Actions -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <button onclick="exportErdToSvg()"
+                            class="flex-1 py-1.5 bg-[#1c2128] hover:bg-blue-600 border border-[#444c56] rounded-lg transition-all shadow-md flex items-center justify-center gap-2 text-xs font-bold text-gray-300 hover:text-white group">
+                            <i class="ph ph-bezier-curve text-blue-400 group-hover:text-white"></i>
+                            <span>SVG</span>
+                        </button>
+                        <button onclick="exportErdToPdf()"
+                            class="flex-1 py-1.5 bg-[#1c2128] hover:bg-emerald-600 border border-[#444c56] rounded-lg transition-all shadow-md flex items-center justify-center gap-2 text-xs font-bold text-gray-300 hover:text-white group">
+                            <i class="ph ph-file-pdf text-emerald-400 group-hover:text-white"></i>
+                            <span>PDF</span>
+                        </button>
+                    </div>
                     <div id="explore-status-pill"
                         class="hidden px-3 py-1 bg-blue-600/20 border border-blue-500/50 rounded-full text-[10px] text-blue-400 font-bold self-end flex items-center gap-2">
                         <span class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span>
@@ -992,20 +1098,20 @@
                                 class="px-3 py-1.5 bg-[#2d333b] hover:bg-red-600/20 border border-[#444c56] hover:border-red-500/50 text-gray-400 hover:text-red-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
                                 <i class="ph ph-trash"></i> Clear
                             </button>
-                            <button onclick="copySQLEditor()"
-                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-blue-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
+                            <button id="sql-copy-btn" onclick="copySQLEditor()"
+                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-blue-400 text-xs font-bold rounded-md flex items-center gap-1.5 transition-all shadow-lg active:scale-95">
                                 <i class="ph-bold ph-copy"></i> Copy SQL
                             </button>
                             <button onclick="visualizeSqlInErd()"
                                 class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-gray-400 hover:text-blue-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
                                 <i class="ph ph-projector-screen-chart"></i> Visualize in ERD
                             </button>
-                            <button onclick="formatSQLCode()"
-                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-emerald-600/20 border border-[#444c56] hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
+                            <button id="sql-format-btn" onclick="formatSQLCode()"
+                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-emerald-600/20 border border-[#444c56] hover:border-emerald-500/50 text-gray-400 hover:text-emerald-400 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 shadow-lg active:scale-95">
                                 <i class="ph ph-magic-wand"></i> Format Code
                             </button>
-                            <button onclick="shareSQLQuery()"
-                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-gray-400 hover:text-blue-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
+                            <button id="sql-share-btn" onclick="shareSQLQuery()"
+                                class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-gray-400 hover:text-blue-400 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 shadow-lg active:scale-95">
                                 <i class="ph ph-share-network"></i> Share Link
                             </button>
                             <button onclick="openIdConverter()"
@@ -1088,8 +1194,8 @@
                                         <i class="ph-bold ph-copy"></i>
                                         <span>Copy SQL</span>
                                     </button>
-                                    <button onclick="shareSQLQuery()"
-                                        class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-gray-400 hover:text-blue-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5">
+                                    <button id="preview-share-btn" onclick="shareSQLQuery()"
+                                        class="px-3 py-1.5 bg-[#2d333b] hover:bg-blue-600/20 border border-[#444c56] hover:border-blue-500/50 text-gray-400 hover:text-blue-400 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 shadow-lg active:scale-95">
                                         <i class="ph ph-share-network"></i> Share Link
                                     </button>
                                     <button id="preview-delete-btn"
@@ -1151,61 +1257,78 @@
             <!-- Modal Body -->
             <div class="flex flex-1 p-6 gap-6 min-h-0 overflow-hidden">
                 <!-- Left Sidebar: Actions -->
-                <div class="w-72 flex flex-col gap-3">
+                <div class="w-72 flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2">
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Commas</label>
                         <div class="flex flex-col gap-2">
                             <button onclick="converterAction('addCommas')"
-                                class="w-full py-2 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-plus text-emerald-500"></i> Add Commas
                             </button>
                             <button onclick="converterAction('removeCommas')"
-                                class="w-full py-2 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-minus text-red-500"></i> Remove Commas
                             </button>
                         </div>
                     </div>
 
-                    <div class="h-px bg-[#444c56] my-1 opacity-30"></div>
+                    <div class="h-px bg-[#444c56] my-0.5 opacity-30"></div>
+
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Letter
+                            Case</label>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="converterAction('upperCase')"
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                <i class="ph ph-text-aa-upper text-indigo-400"></i> Uppercase
+                            </button>
+                            <button onclick="converterAction('lowerCase')"
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                <i class="ph ph-text-aa-lower text-indigo-400"></i> Lowercase
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-[#444c56] my-0.5 opacity-30"></div>
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Quotes</label>
                         <div class="flex flex-col gap-2">
                             <button onclick="converterAction('addQuotes')"
-                                class="w-full py-2 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-quotes text-emerald-500"></i> Add Single Quotes
                             </button>
                             <button onclick="converterAction('removeQuotes')"
-                                class="w-full py-2 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-[#2d333b] hover:bg-[#3d444d] border border-[#444c56] text-gray-300 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-minus text-red-500"></i> Remove Quotes
                             </button>
                         </div>
                     </div>
 
-                    <div class="h-px bg-[#444c56] my-1 opacity-30"></div>
+                    <div class="h-px bg-[#444c56] my-0.5 opacity-30"></div>
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Domain
                             Name</label>
                         <input type="text" id="converter-prefix" placeholder="Example: PLANNING"
-                            class="w-full bg-[#0d1117] border border-[#444c56] text-sm text-white rounded-xl px-4 py-2.5 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-700">
+                            class="w-full bg-[#0d1117] border border-[#444c56] text-sm text-white rounded-xl px-4 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-700">
                         <div class="flex flex-col gap-2">
                             <button onclick="converterAction('addDomain')"
-                                class="w-full py-2.5 px-4 bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 hover:border-indigo-500/50 text-indigo-400 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 hover:border-indigo-500/50 text-indigo-400 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-plus-circle"></i> Add Domain
                             </button>
                             <button onclick="converterAction('removeDomain')"
-                                class="w-full py-2.5 px-4 bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 hover:border-red-500/50 text-red-500 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
+                                class="w-full py-1.5 px-4 bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 hover:border-red-500/50 text-red-500 rounded-xl text-sm font-medium transition-all active:scale-95 text-left flex items-center gap-3">
                                 <i class="ph ph-minus-circle"></i> Remove Domain
                             </button>
                         </div>
                     </div>
 
-                    <div class="mt-auto pt-4">
-                        <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 text-center">
-                            <div class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mb-1">Elements
+                    <div class="mt-auto pt-2">
+                        <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3 text-center">
+                            <div class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mb-0.5">Elements
                             </div>
-                            <div id="converter-count" class="text-3xl font-black text-white">0</div>
+                            <div id="converter-count" class="text-2xl font-black text-white">0</div>
                         </div>
                     </div>
                 </div>
@@ -1260,8 +1383,8 @@
     <div id="delete-confirm-modal"
         class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
         <div
-            class="bg-[#1c2128] w-full max-w-sm rounded-2xl border border-[#444c56] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div class="px-6 py-8 flex flex-col items-center text-center">
+            class="bg-[#1c2128] w-full max-w-sm max-h-[90vh] flex flex-col rounded-2xl border border-[#444c56] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="px-6 py-6 flex flex-1 flex-col items-center text-center overflow-y-auto custom-scrollbar">
                 <div class="w-16 h-16 bg-red-600/10 rounded-full flex items-center justify-center mb-4">
                     <i class="ph-bold ph-warning text-red-500 text-3xl"></i>
                 </div>
@@ -1289,7 +1412,7 @@
     <div id="save-query-modal"
         class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
         <div
-            class="bg-[#1c2128] w-full max-w-md rounded-2xl border border-[#444c56] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+            class="bg-[#1c2128] w-full max-w-md max-h-[90vh] flex flex-col rounded-2xl border border-[#444c56] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-[#444c56] flex items-center justify-between bg-[#22272e]">
                 <div class="flex items-center gap-3">
@@ -1302,7 +1425,7 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
                 <div class="space-y-1.5">
                     <label for="save-query-name"
                         class="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Query Name</label>
@@ -1358,6 +1481,37 @@
         </div>
     </div>
 
+    <!-- Nexus Generic Alert Modal -->
+    <div id="nexus-alert-modal"
+        class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div
+            class="bg-[#1c2128] w-full max-w-md rounded-2xl border border-[#444c56] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-[#444c56] flex items-center justify-between bg-[#22272e]">
+                <div class="flex items-center gap-3">
+                    <i id="nexus-alert-icon" class="ph-bold ph-info text-blue-400 text-xl"></i>
+                    <h2 id="nexus-alert-title" class="text-lg font-bold text-white tracking-tight">Notification</h2>
+                </div>
+                <button onclick="closeNexusModal()" class="text-gray-500 hover:text-white transition-colors">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <p id="nexus-alert-message" class="text-gray-300 text-sm leading-relaxed"></p>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-[#22272e] border-t border-[#444c56] flex justify-end">
+                <button onclick="closeNexusModal()"
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-95">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const mockDatabase = {};
         const loadedTables = new Set();
@@ -1388,6 +1542,7 @@
         }
 
         let currentTableId = null;
+        let dictHoverTimeout = null;
         let currentView = 'dictionary';
         let zoom = 1;
         let panX = 100;
@@ -1410,6 +1565,7 @@
             searchInputTables: document.getElementById('search-tables'),
             searchInputColumns: document.getElementById('search-columns'),
             welcomeState: document.getElementById('welcome-state'),
+            updatesLoader: document.getElementById('updates-loader'),
             detailTitle: document.getElementById('detail-title'),
             detailDescription: document.getElementById('detail-description'),
             columnsBody: document.getElementById('columns-body'),
@@ -1455,8 +1611,39 @@
             previewQuerySql: document.getElementById('preview-query-sql'),
             previewLoadBtn: document.getElementById('preview-load-btn'),
             previewCopyBtn: document.getElementById('preview-copy-btn'),
-            previewDeleteBtn: document.getElementById('preview-delete-btn')
+            previewShareBtn: document.getElementById('preview-share-btn'),
+            previewDeleteBtn: document.getElementById('preview-delete-btn'),
+            sqlCopyBtn: document.getElementById('sql-copy-btn'),
+            sqlFormatBtn: document.getElementById('sql-format-btn'),
+            sqlShareBtn: document.getElementById('sql-share-btn'),
+            nexusAlertModal: document.getElementById('nexus-alert-modal'),
+            nexusAlertIcon: document.getElementById('nexus-alert-icon'),
+            nexusAlertTitle: document.getElementById('nexus-alert-title'),
+            nexusAlertMessage: document.getElementById('nexus-alert-message')
         };
+
+        function showNexusModal(title, message, type = 'info') {
+            dom.nexusAlertTitle.textContent = title;
+            dom.nexusAlertMessage.innerHTML = message.replace(/\n/g, '<br>');
+
+            // Set icon based on type
+            dom.nexusAlertIcon.className = 'ph-bold text-xl';
+            if (type === 'warning') {
+                dom.nexusAlertIcon.classList.add('ph-warning', 'text-amber-400');
+            } else if (type === 'error') {
+                dom.nexusAlertIcon.classList.add('ph-warning-circle', 'text-red-500');
+            } else if (type === 'success') {
+                dom.nexusAlertIcon.classList.add('ph-check-circle', 'text-emerald-500');
+            } else {
+                dom.nexusAlertIcon.classList.add('ph-info', 'text-blue-400');
+            }
+
+            dom.nexusAlertModal.classList.remove('hidden');
+        }
+
+        function closeNexusModal() {
+            dom.nexusAlertModal.classList.add('hidden');
+        }
 
         function debounce(func, wait) {
             let timeout;
@@ -1481,6 +1668,35 @@
             // Set selector value
             const selector = document.getElementById('otm-version-selector');
             if (selector) selector.value = currentVersion;
+        }
+
+        function loadUpdates() {
+            if (!dom.updatesLoader) return;
+
+            const script = document.createElement('script');
+            script.src = `updates.js?v=${Date.now()}`;
+
+            script.onload = () => {
+                if (window.NEXUS_UPDATES_HTML) {
+                    dom.updatesLoader.innerHTML = window.NEXUS_UPDATES_HTML;
+                } else {
+                    dom.updatesLoader.innerHTML = `
+                        <div class="p-6 text-center bg-blue-500/5 rounded-xl border border-blue-500/20">
+                            <i class="ph ph-info text-blue-400 text-2xl mb-2"></i>
+                            <p class="text-xs text-blue-300">No updates found in the script file.</p>
+                        </div>`;
+                }
+            };
+
+            script.onerror = () => {
+                dom.updatesLoader.innerHTML = `
+                    <div class="p-6 text-center bg-red-500/5 rounded-xl border border-red-500/20">
+                        <i class="ph ph-warning-circle text-red-400 text-2xl mb-2"></i>
+                        <p class="text-xs text-red-300">Error loading updates.js script. Verify the file exists.</p>
+                    </div>`;
+            };
+
+            document.head.appendChild(script);
         }
 
         async function switchOTMVersion(newVersion) {
@@ -1555,8 +1771,9 @@
 
             jsPlumbInstance = jsPlumb.getInstance({
                 Container: "erd-content",
-                Connector: ["Flowchart", { stub: 30, gap: 10, cornerRadius: 5, alwaysRouteOnEmptyLine: true }],
+                Connector: ["Flowchart", { stub: 30, gap: 10, cornerRadius: 5, alwaysRouteOnEmptyLine: true, midpoint: 0.5 }],
                 Endpoint: ["Dot", { radius: 2 }],
+                Anchor: "Continuous",
                 PaintStyle: { stroke: "#3b82f6", strokeWidth: 2, outlineStroke: "transparent", outlineWidth: 10 },
                 HoverPaintStyle: { stroke: "#ef4444", strokeWidth: 4, cursor: "pointer" },
                 EndpointStyle: { fill: "#3b82f6", stroke: "transparent" },
@@ -1821,7 +2038,7 @@
                             }
                             return newJoinStr;
                         } else {
-                            alert(`No foreign key relationship was found between the table '${targetTable}' and the tables already present in the query.\n\nThe JOIN cannot be generated automatically.`);
+                            showNexusModal("Connection Not Found", `No foreign key relationship was found between the table '${targetTable}' and the tables already present in the query.\n\nThe JOIN cannot be generated automatically.`, "warning");
                             return null;
                         }
                     }
@@ -2000,16 +2217,17 @@
                     formatted = formatted.replace(/\bSELECT\s*\n\s*/gi, 'SELECT ');
 
                     codeMirrorEditor.setValue(formatted);
-                } catch (e) {
-                    console.error("Format error", e);
-                    // Minimal fallback
-                    let basic = sql
-                        .replace(/\s+/g, ' ')
-                        .replace(/\b(SELECT|FROM|WHERE|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|GROUP BY|ORDER BY|HAVING|LIMIT)\b/gi, '\n$1')
-                        .replace(/\b(AND|OR|ON)\b/gi, '\n    $1')
-                        .trim();
-                    basic = basic.replace(/\bSELECT\s*\n\s+/gi, 'SELECT ');
-                    codeMirrorEditor.setValue(basic);
+
+                    // Visual feedback
+                    const btn = dom.sqlFormatBtn;
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML = '<i class="ph-bold ph-check text-emerald-400"></i> <span>Formatted!</span>';
+                    setTimeout(() => btn.innerHTML = originalContent, 2000);
+
+                    showToast("Code formatted successfully!");
+                } catch (err) {
+                    console.error('SQL Formatter Error:', err);
+                    showToast("Error formatting SQL code.", "error");
                 }
             }
         }
@@ -2023,9 +2241,12 @@
 
         async function shareSQLQuery() {
             let sql = "";
-            
+            let btn = null;
+
             if (currentView === 'saved') {
                 sql = dom.previewQuerySql.textContent;
+                btn = dom.previewShareBtn;
+                // Wait, saved queries has its own share button too. Let's see if we should use it.
                 if (!sql || sql.trim() === '') {
                     showToast("No query selected to share!", "error");
                     return;
@@ -2033,6 +2254,7 @@
             } else {
                 if (!codeMirrorEditor) return;
                 sql = codeMirrorEditor.getValue();
+                btn = dom.sqlShareBtn;
                 if (!sql || sql.trim() === '-- Drag tables and columns here to generate SQL' || sql.trim() === '') {
                     showToast("Editor is empty!", "error");
                     return;
@@ -2046,6 +2268,13 @@
                 url.hash = `sql=${encoded}`;
 
                 await navigator.clipboard.writeText(url.toString());
+
+                if (btn) {
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML = '<i class="ph-bold ph-check text-emerald-400"></i> <span>Copied!</span>';
+                    setTimeout(() => btn.innerHTML = originalContent, 2000);
+                }
+
                 showToast("Share link copied to clipboard!");
             } catch (err) {
                 console.error('Failed to share query', err);
@@ -2346,6 +2575,13 @@
 
                 try {
                     await navigator.clipboard.writeText(text);
+
+                    const btn = dom.sqlCopyBtn;
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML = '<i class="ph-bold ph-check text-emerald-400"></i> <span>Copied!</span>';
+                    setTimeout(() => btn.innerHTML = originalContent, 2000);
+
+                    showToast("SQL copied to clipboard!");
                 } catch (err) {
                     console.error('Failed to copy text', err);
                 }
@@ -2662,7 +2898,7 @@
                             }
                         }
                     } else {
-                        alert(`No foreign key relationship was found between the table '${tableName}' and the tables already present in the query.\n\nThe JOIN cannot be generated automatically.`);
+                        showNexusModal("Connection Not Found", `No foreign key relationship was found between the table '${tableName}' and the tables already present in the query.\n\nThe JOIN cannot be generated automatically.`, "warning");
                         return;
                     }
                 }
@@ -3110,7 +3346,50 @@
         }
 
         function hideColumnTooltip() {
+            if (dictHoverTimeout) {
+                clearTimeout(dictHoverTimeout);
+                dictHoverTimeout = null;
+            }
             dom.erdTooltip.classList.remove('visible');
+        }
+
+        function showDictionaryTooltip(e, tableName, colName) {
+            if (dictHoverTimeout) {
+                clearTimeout(dictHoverTimeout);
+            }
+
+            dictHoverTimeout = setTimeout(() => {
+                const tableData = mockDatabase[tableName];
+                if (!tableData) return;
+                const col = tableData.columns[colName];
+                if (!col || !col.info) return;
+
+                const tooltip = dom.erdTooltip;
+                tooltip.innerHTML = `
+                    <div class="tooltip-title">
+                        <i class="ph-fill ph-info text-blue-400"></i>
+                        <span>Column Description</span>
+                    </div>
+                    <div class="text-gray-300 leading-relaxed">
+                        ${col.info}
+                    </div>
+                `;
+                tooltip.classList.add('visible');
+
+                const padding = 15;
+                let tx = e.clientX + padding;
+                let ty = e.clientY + padding;
+
+                requestAnimationFrame(() => {
+                    const rect = tooltip.getBoundingClientRect();
+                    if (tx + rect.width > window.innerWidth) tx = e.clientX - rect.width - padding;
+                    if (ty + rect.height > window.innerHeight) ty = e.clientY - rect.height - padding;
+                    tooltip.style.left = `${tx}px`;
+                    tooltip.style.top = `${ty}px`;
+                });
+
+                dictHoverTimeout = null;
+            }, 150);
         }
 
         function renderTableDetails(name) {
@@ -3142,6 +3421,9 @@
                         <td class="px-6 py-4 text-xs font-semibold flex items-center">
                             <span class="${cData.key_value ? 'text-white underline decoration-[#f69e5d]/50' : 'text-gray-300'}">${cName}</span>
                             ${cData.key_value ? '<i class="ph-fill ph-key pk-icon-dict ml-2"></i>' : ''}
+                            ${cData.info ? `<i class="ph ph-info ml-2 text-gray-500 hover:text-blue-400 cursor-help transition-colors" 
+                                              onmouseenter="showDictionaryTooltip(event, '${name}', '${cName}')" 
+                                              onmouseleave="hideColumnTooltip()"></i>` : ''}
                         </td>
                         <td class="px-6 py-4">
                             ${cData.foreign_key ? `<button onclick="selectTable('${cData.foreign_key}')" class="fk-link"><i class="ph-bold ph-arrow-right"></i> ${cData.foreign_key}</button>` : ''}
@@ -3763,7 +4045,7 @@
 
         function exploreConnections(sourceTableName) {
             if (!sourceTableName) {
-                alert("Please select a table in the sidebar first.");
+                showNexusModal("Select a Table", "Please select a table in the sidebar first.", "info");
                 return;
             }
 
@@ -4211,7 +4493,7 @@
 
         function sendErdToSql() {
             if (renderedTables.size === 0) {
-                alert("Please add some tables to the ERD first.");
+                showNexusModal("Empty ERD", "Please add some tables to the ERD first.", "info");
                 return;
             }
 
@@ -4355,7 +4637,7 @@
             if (!codeMirrorEditor) return;
             const sql = codeMirrorEditor.getValue();
             if (!sql || sql.trim() === '-- Drag tables and columns here to generate SQL') {
-                alert("Please write or generate a query first.");
+                showNexusModal("Empty Editor", "Please write or generate a query first.", "info");
                 return;
             }
 
@@ -4378,7 +4660,7 @@
             }
 
             if (tableInfo.length === 0) {
-                alert("No tables found in the query to visualize.");
+                showNexusModal("No Tables Found", "No tables found in the query to visualize.", "warning");
                 return;
             }
 
@@ -4547,6 +4829,10 @@
                             if (dIdx !== -1) core = core.substring(dIdx + 1);
                         }
                         return isQuoted ? `'${core}'` : core;
+                    case 'upperCase':
+                        return isQuoted ? `'${core.toUpperCase()}'` : core.toUpperCase();
+                    case 'lowerCase':
+                        return isQuoted ? `'${core.toLowerCase()}'` : core.toLowerCase();
                     default:
                         return id;
                 }
@@ -4751,7 +5037,192 @@
             }
         }
 
+        // --- ERD Export Logic ---
+        function calculateBoundingBox() {
+            const cards = document.querySelectorAll('#erd-content .erd-card');
+            if (cards.length === 0) return null;
+
+            let minX = Infinity, minY = Infinity;
+            let maxX = -Infinity, maxY = -Infinity;
+
+            cards.forEach(card => {
+                const left = parseFloat(card.style.left) || 0;
+                const top = parseFloat(card.style.top) || 0;
+                const width = card.offsetWidth;
+                const height = card.offsetHeight;
+
+                minX = Math.min(minX, left);
+                minY = Math.min(minY, top);
+                maxX = Math.max(maxX, left + width);
+                maxY = Math.max(maxY, top + height);
+            });
+
+            const padding = 40;
+            return {
+                x: Math.max(0, minX - padding),
+                y: Math.max(0, minY - padding),
+                width: (maxX - minX) + (padding * 2),
+                height: (maxY - minY) + (padding * 2)
+            };
+        }
+
+        async function prepareExport() {
+            document.getElementById('erd-canvas').classList.add('print-mode');
+
+            // Swap icons for text to bypass html-to-image's web-font fetching timeouts
+            document.querySelectorAll('#erd-content .pk-icon').forEach(el => {
+                el.dataset.origClass = el.className;
+                el.className = 'pk-icon-print font-bold text-[#f59e0b] mr-2 text-[10px] border border-[#f59e0b] rounded px-1';
+                el.textContent = 'PK';
+            });
+            document.querySelectorAll('#erd-content .fk-icon').forEach(el => {
+                el.dataset.origClass = el.className;
+                el.className = 'fk-icon-print font-bold text-[#3b82f6] mr-2 text-[10px] border border-[#3b82f6] rounded px-1';
+                el.textContent = 'FK';
+            });
+
+            // Prevent jsPlumb's transparent hit-boxes from being rasterized as solid black lines in PDFs
+            document.querySelectorAll('path[stroke="transparent"]').forEach(p => {
+                p.classList.add('print-hidden-outline');
+                p.style.display = 'none';
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 300)); // wait for styles to apply
+        }
+
+        function restoreExport() {
+            document.getElementById('erd-canvas').classList.remove('print-mode');
+
+            document.querySelectorAll('#erd-content .pk-icon-print').forEach(el => {
+                el.className = el.dataset.origClass;
+                el.textContent = '';
+            });
+            document.querySelectorAll('#erd-content .fk-icon-print').forEach(el => {
+                el.className = el.dataset.origClass;
+                el.textContent = '';
+            });
+
+            // Restore hit-boxes
+            document.querySelectorAll('.print-hidden-outline').forEach(p => {
+                p.style.display = '';
+                p.classList.remove('print-hidden-outline');
+            });
+        }
+
+        async function exportErdToSvg() {
+            const box = calculateBoundingBox();
+            if (!box) {
+                if (window.showToast) window.showToast("No ERD elements to export", "warning");
+                else showNexusModal("Export Failed", "No ERD elements to export", "error");
+                return;
+            }
+
+            if (window.showToast) window.showToast("Generating SVG...", "info");
+            await prepareExport();
+
+            const canvasHTML = document.getElementById('erd-content').innerHTML;
+
+            const svgContent = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="${box.width}" height="${box.height}">
+                <foreignObject x="0" y="0" width="${box.width}" height="${box.height}">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; left: ${-box.x}px; top: ${-box.y}px;">
+                        <style>
+                            /* Embed styles specifically for the foreignObject so SVG is standalone */
+                            .erd-card { background: #f8f9fa !important; border: 2px solid #0f172a !important; position: absolute; border-radius: 12px; width: 260px; font-family: 'Inter', system-ui, sans-serif; box-sizing: border-box; }
+                            .erd-card-header { background: #ffffff !important; border-bottom: 2px solid #0f172a !important; padding: 10px 14px; font-weight: 800 !important; color: #0f172a !important; display: flex; justify-content: space-between; border-radius: 10px 10px 0 0; }
+                            .erd-card-header span { color: #0f172a !important; font-weight: 800 !important; font-size: 14px; }
+                            .erd-card-body { padding: 8px 0; }
+                            .erd-column { padding: 6px 14px; display: flex; align-items: center; font-size: 12px; color: #334155 !important; line-height: 1.5; }
+                            .erd-column > div:first-child { flex: 1; display: flex; align-items: center;}
+                            .erd-column span.text-gray-500 { color: #64748b !important; margin-left: auto; font-weight: 600; text-align: right; }
+                            .pk-icon { color: #f69e5d; margin-right: 6px; }
+                            .fk-icon { color: #53b9cc; margin-right: 6px; }
+                            .jtk-connector { position: absolute; z-index: 5; }
+                            .jtk-connector path { stroke: #0f172a !important; fill: transparent; stroke-width: 2px; }
+                            .jtk-endpoint { position: absolute; z-index: 6; }
+                            .jtk-endpoint circle { fill: #0f172a !important; }
+                            .card-close-btn, .col-remove-btn, .expand-card-footer { display: none !important; }
+                        </style>
+                        ${canvasHTML}
+                    </div>
+                </foreignObject>
+            </svg>`;
+
+            const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ERD_Export_${new Date().getTime()}.svg`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            restoreExport();
+            if (window.showToast) window.showToast("ERD exported to SVG successfully", "success");
+        }
+
+        async function exportErdToPdf() {
+            if (typeof window.htmlToImage === 'undefined' || typeof window.jspdf === 'undefined') {
+                showNexusModal("Loading Libraries", "PDF libraries are loading, please try again in a few seconds.", "info");
+                return;
+            }
+
+            const box = calculateBoundingBox();
+            if (!box) {
+                if (window.showToast) window.showToast("No ERD elements to export", "warning");
+                else showNexusModal("Export Failed", "No ERD elements to export", "error");
+                return;
+            }
+
+            if (window.showToast) window.showToast("Generating PDF...", "info");
+            await prepareExport();
+
+            const eContent = document.getElementById('erd-content');
+            const oldTransform = eContent.style.transform;
+
+            // For htmlToImage we just need to shift the content left/up by box.x/y
+            // so that at 0,0 we see exactly the bounding box area.
+            eContent.style.transform = `translate(${-box.x}px, ${-box.y}px)`;
+
+            try {
+                const dataUrl = await window.htmlToImage.toPng(eContent, {
+                    width: box.width,
+                    height: box.height,
+                    backgroundColor: '#ffffff',
+                    pixelRatio: 2
+                });
+
+                const { jsPDF } = window.jspdf;
+                const orientation = box.width > box.height ? 'l' : 'p';
+                const pdf = new jsPDF(orientation, 'mm', 'a4');
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                const ratio = Math.min(pdfWidth / box.width, pdfHeight / box.height);
+                const margin = 5; // 5mm margin
+                const ratioWithMargin = Math.min((pdfWidth - 2 * margin) / box.width, (pdfHeight - 2 * margin) / box.height);
+
+                const finalWidth = box.width * ratioWithMargin;
+                const finalHeight = box.height * ratioWithMargin;
+                const startX = (pdfWidth - finalWidth) / 2;
+                const startY = (pdfHeight - finalHeight) / 2;
+
+                pdf.addImage(dataUrl, 'PNG', startX, startY, finalWidth, finalHeight);
+                pdf.save(`ERD_Export_${new Date().getTime()}.pdf`);
+
+                if (window.showToast) window.showToast("ERD exported to PDF successfully", "success");
+            } catch (err) {
+                console.error("Export error:", err);
+                if (window.showToast) window.showToast("Failed to export PDF", "error");
+            } finally {
+                eContent.style.transform = oldTransform;
+                restoreExport();
+            }
+        }
+        // --- End ERD Export Logic ---
+
         window.onload = async () => {
+            loadUpdates();
             await init();
 
             // Check for shared query in URL
